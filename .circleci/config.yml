@@ -10,6 +10,8 @@ jobs:
       - run: git tag $(jq .version .version)
       - run: git push --tags
   build:
+    docker:
+      - image: openjdk:8-jdk
     steps:
       - checkout
       - run:
