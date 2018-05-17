@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  tagging:
+    docker:
+      - image: openjdk:8-jdk
+    steps:
+      - checkout
+      - run: apt install jq
+      - run: git tag $(jq .date .version)
+      - run: git tag $(jq .version .version)
+      - run: git push --tags
+  build:
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: git describe
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - tagging:
+          filters:
+            branches:
+              only: master
+      - build:
+          requires:
+            - tagging 
