@@ -2,10 +2,10 @@ version: 2
 jobs:
   tagging:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:8-jdk-slim
     steps:
       - checkout
-      - run: apt install jq
+      - run: apt install jq -y
       - run: git tag $(jq .date .version)
       - run: git tag $(jq .version .version)
       - run: git push --tags
