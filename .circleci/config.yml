@@ -5,7 +5,6 @@ jobs:
       - image: openjdk:8-jdk
     steps:
       - checkout
-      - run: 
       - run: git describe
   create_pr:
     docker:
