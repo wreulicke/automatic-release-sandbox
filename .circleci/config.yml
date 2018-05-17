@@ -5,12 +5,29 @@ jobs:
       - image: openjdk:8-jdk
     steps:
       - checkout
+      - run: 
       - run: git describe
+  create_pr:
+    docker:
+      - image: openjdk:8-jdk
+    steps:
+      - checkout
+      - run: | 
+        curl -XPOST -H "Authorization: Bearer $GITHUB_API_TOKEN" https://api.github.com/repos/wreulicke/automatic-release-sandbox/pulls -d '{
+            "title": "Test",
+            "head": "release",
+            "base": "master",
+            "body": "## 概要 \r\n\r\nTest"
+        }'
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
+      - create_pr:
+          filters:
+            branches:
+              only: /^release/
       - build:
           filters:
             branches:
