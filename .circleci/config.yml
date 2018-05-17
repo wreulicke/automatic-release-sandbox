@@ -4,19 +4,18 @@ jobs:
     docker:
       - image: openjdk:8-jdk-slim
     steps:
+      - run: apt update && apt install jq git -y
       - checkout
-      - run: apt install jq -y
       - run: git tag $(jq .date .version)
       - run: git tag $(jq .version .version)
       - run: git push --tags
   build:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:8-jdk-slim
     steps:
+      - run: apt update && apt install jq git -y
       - checkout
-      - run:
-          name: build
-          command: git describe
+      - run: git describe
 
 workflows:
   version: 2
